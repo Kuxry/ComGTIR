@@ -282,7 +282,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    use_trie = not args.no_trie  # 默认True，加--no_trie就变成False
+    use_trie = not args.no_trie  # 
     print("⚠️Data path", args.data_path)
 
     tok = T5Tokenizer.from_pretrained(args.ckpt)
