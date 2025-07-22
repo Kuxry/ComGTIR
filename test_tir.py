@@ -190,7 +190,7 @@ def evaluate(
 
             if blip_rerank:
                 # BLIP ITM rerank
-                need_idx = torch.unique(row_idx_clamped).tolist()  # 去重
+                need_idx = torch.unique(row_idx_clamped).tolist()  #
                 img_bank = {}  # {img_idx: tensor}
                 for idx in need_idx:
                     img_path = os.path.join(blip_image_dir, image_names[idx])
@@ -273,7 +273,7 @@ if __name__ == "__main__":
     # BLIP rerank
     parser.add_argument("--blip_rerank", action="store_true", help="Use BLIP ITM for rerank")
     parser.add_argument("--blip_model_path", type=str, default=None, help="BLIP ITM model path")
-    parser.add_argument("--blip_image_json", type=str, default=None, help="image list json (按caption顺序)")
+    parser.add_argument("--blip_image_json", type=str, default=None, help="image list json ")
     parser.add_argument("--blip_image_dir", type=str, default=None, help="image file dir")
     parser.add_argument("--blip_caption_path", type=str, default=None, help="caption file path")
     parser.add_argument('--no_trie', action='store_true', help='Do NOT use Trie prefix guidance')

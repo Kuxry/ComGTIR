@@ -183,15 +183,15 @@ if __name__ == '__main__':
 
     model.resize_token_embeddings(len(tokenizer))
 
-    #加载打分头权重
+    # Load pretrained seq_id_preference_head if specified
     pretrained_head_path = train_args.pretrained_head_path
     if os.path.exists(pretrained_head_path):
         state_dict = torch.load(pretrained_head_path, map_location='cpu')
         model.seq_id_preference_head.load_state_dict(state_dict)
         if local_rank == 0:
-            print("已加载预训练的打分头参数")
+            print("Load pretrained seq_id_preference_head if specified  ")
     else:
-        print(f"未找到打分头权重文件：{pretrained_head_path}，将使用默认初始化")
+        print(f"no：{pretrained_head_path}， skipping loading pretrained seq_id_preference_head.")
 
     if add_embedding:
         rq_emb = torch.load(data_path+'/codebook_embedding.pt')
@@ -283,26 +283,19 @@ if __name__ == '__main__':
             outputs = model(**inputs)
             logits = outputs.logits
             h_q_seq = outputs.h_q_seq  # [batch, codebook_size]
-
-            # 主任务交叉熵损失
+            #
             loss_fct = torch.nn.CrossEntropyLoss(ignore_index=-100)
             ce_loss = loss_fct(logits.view(-1, logits.size(-1)), labels.view(-1))
-
-            # InfoNCE损失
+            # InfoNCE
             batch_size = labels.size(0)
             # 
-            positive_token_ids = labels[:, :4]  # [batch, 4]
-
-            # 获取c_token_start_id和codebook_size
+            positive_token_ids = labels[:, :4]  # [batch, 4]#
             c_token_start_id = 32100
-            codebook_size = 1024
-
-            # 映射为codebook内部index
+            codebook_size = 1024 # Assuming codebook_size is 1024 for general case
             positive_code_ids = positive_token_ids - c_token_start_id  # [batch, 4]
-
-            # 检查越界
+            # if positive_code_ids.size(1) != 4:
             if (positive_code_ids < 0).any() or (positive_code_ids >= codebook_size).any():
-                print("越界的 code id:", positive_code_ids)
+                print("code id:", positive_code_ids)
                 raise ValueError("Some code ids are out of codebook range!")
 
             log_probs = torch.log_softmax(h_q_seq, dim=1)
@@ -336,27 +329,25 @@ if __name__ == '__main__':
                                      code_book_size=num_c_tokens if num_c_tokens > 0 else 0)],
         lambda_guidance=train_args.lambda_guidance,
     )
-    # -------------- sanity‑check begin --------------
+    # -------------- sanity‑check  --------------
     if local_rank == 0:
-        print("\n=== TIR sanity check ===")
         print("λ_guidance =", train_args.lambda_guidance)
         print("num_c_tokens =", num_c_tokens)
         print("c_token_start_id =", c_token_start_id)
 
     if train_args.lambda_guidance > 0:
-        assert num_c_tokens > 0, "λ_guidance>0 但没有 c_ tokens"
-        assert c_token_start_id is not None, "找不到 c_0 的 ID"
+        assert num_c_tokens > 0, " c_ tokens is wrong"
+        assert c_token_start_id is not None, "no ID"
 
         last_id_expect = c_token_start_id + num_c_tokens - 1
         last_id_actual = tokenizer.convert_tokens_to_ids(f"c_{num_c_tokens-1}")
         if local_rank == 0:
             print("Expect c_token range:", c_token_start_id, "–", last_id_expect)
             print("Actual last c_token id:", last_id_actual)
-        assert last_id_actual == last_id_expect, "c_ tokens 在词表里不连续！"
+        assert last_id_actual == last_id_expect, "c_ tokens is wrong！"
     if local_rank == 0:
         print("=== sanity check passed ===\n")
     # -------------- sanity‑check end ----------------
-
 
 
     trainer.train()

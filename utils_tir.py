@@ -69,7 +69,6 @@ def prefix_allowed_tokens_fn(candidate_trie):
 def llama_prefix_allowed_tokens_fn(candidate_trie):
     def prefix_allowed_tokens(batch_id, sentence):
         sentence = sentence.tolist()
-        # 13291 is the token id for vokens, so the function can return the correct allowed tokens
         # you may need to change this value in your case
         index = sentence.index(13291)
         sentence = sentence[index:]
@@ -300,24 +299,15 @@ class T5ForPAGSeqIdGeneration(T5ForConditionalGeneration):
             raise ValueError(
                 "Config must have 'pag_code_book_size' attribute for T5ForPAGSeqIdGeneration. This should be set to the number of 'c_...' tokens.")
         self.pag_code_book_size = config.pag_code_book_size
-
-        # 新增：创建seq_id_preference_head并初始化为lm_head的部分权重
         self.seq_id_preference_head = nn.Linear(config.d_model, self.pag_code_book_size)
 
-        # 复制lm_head中对应c_token部分的权重（如果可能）
         if hasattr(config, 'c_token_start_id') and config.c_token_start_id is not None:
             with torch.no_grad():
-                # 获取lm_head权重
                 lm_head_weights = self.lm_head.weight  # shape: [vocab_size, d_model]
-
-                # 检查c_token是否在lm_head范围内
                 c_token_start = config.c_token_start_id
                 if c_token_start < lm_head_weights.shape[0] and c_token_start + self.pag_code_book_size <= \
                         lm_head_weights.shape[0]:
-                    # 提取c_token对应的权重
                     c_token_weights = lm_head_weights[c_token_start:c_token_start + self.pag_code_book_size, :]
-
-                    # 转置后赋值给seq_id_preference_head
                     self.seq_id_preference_head.weight.data = c_token_weights
                     if self.seq_id_preference_head.bias is not None:
                         self.seq_id_preference_head.bias.data.zero_()
@@ -385,14 +375,9 @@ class T5ForPAGSeqIdGeneration(T5ForConditionalGeneration):
                 current_encoder_last_hidden_state = encoder_outputs.last_hidden_state
 
         if current_encoder_last_hidden_state is not None:
-            # 注意：这里修改为对所有token做max-pooling
             # [batch_size, seq_len, d_model] -> [batch_size, d_model]
             pooled_encoder_output = torch.max(current_encoder_last_hidden_state, dim=1)[0]
-
-            # 通过seq_id_preference_head计算偏好分数
             preference_logits = self.seq_id_preference_head(pooled_encoder_output)  # [batch_size, pag_code_book_size]
-
-            # PAG论文中的非线性变换：ReLU + log1p
             h_q_seq = torch.log1p(torch.relu(preference_logits))
 
         if return_dict:
@@ -430,7 +415,7 @@ class PAGLogitsProcessor(LogitsProcessor):
         # new scores after guidance
         guided_first_c = new_scores[:, self.c_token_start_id]
 
-        # if torch.distributed.get_rank() == 0 and step == 2:  # 只打一次日志
+        # if torch.distributed.get_rank() == 0 and step == 2:
         #     print("raw vs guided (first 5 hypos):")
         #     for r, g in zip(raw_first_c[:5], guided_first_c[:5]):
         #         print(f"{r.item():.4f} -> {g.item():.4f}")
@@ -458,17 +443,16 @@ class PrefixPriorLogitsProcessor(LogitsProcessor):
         self.beam_size     = beam_size
 
     def __call__(self, input_ids, scores):
-        # -------- token-level 偏置 --------
+        # -------- token-level  --------
         bias = torch.zeros_like(scores)
         bias[:, self.c_start:self.c_start+self.C] += self.λ * self.h_q_expanded
         scores = scores + bias
-
-        # -------- prefix-level 偏置 --------
+        # -------- prefix-level  --------
         for i in range(scores.size(0)):
             q_idx  = i // self.beam_size
             prefix = tuple(input_ids[i].tolist())
             prior  = self.prefix_priors[q_idx].get(prefix, 0)
-            scores[i] += prior       # 把常数加到整行 logits
+            scores[i] += prior
         return scores
 
 class QueryEvalCallback(TrainerCallback):
@@ -511,17 +495,17 @@ class QueryEvalCallback(TrainerCallback):
         )
         self.code_list = load_codes(tgt_file)
 
-        # ---------- 读入 test.target → 构建 seq_ids_tensor ----------
+        # ---------- test.target →  seq_ids_tensor ----------
         seq_lists = []
         with open(tgt_file, encoding="utf-8") as fh:   # tgt_file = test_target_file
             for line in fh:
                 seq_lists.append([int(tok.lstrip("c_")) for tok in line.strip().split()])
 
         self.seq_len = max(len(x) for x in seq_lists)  # m
-        for row in seq_lists:                          # pad 到等长
+        for row in seq_lists:                          #
             row += [0]*(self.seq_len - len(row))
 
-        # [N_img, m] 仍留在 CPU，真正用时再 .to(device)
+        # [N_img, m]
         self.seq_ids_tensor = torch.tensor(seq_lists, dtype=torch.long)
         self.n_candidates   = 500      # Top-n
 
@@ -678,8 +662,7 @@ class QueryEvalCallback(TrainerCallback):
                     )
                 if hasattr(planning_outputs_2, 'h_q_seq') and planning_outputs_2.h_q_seq is not None:
                     h_q_seq_batch_original_2 = planning_outputs_2.h_q_seq
-
-                    # ---------- 计算 prefix-prior（只对 test 图像） ----------
+                    # ---------- prefix-prior（ ----------
                     seq_ids_gpu = self.seq_ids_tensor.to(model.device)  # [N_img, m]
                     B_cur, C = h_q_seq_batch_original_2.shape
                     N_img, m = seq_ids_gpu.shape
@@ -691,7 +674,7 @@ class QueryEvalCallback(TrainerCallback):
                     )  # [B, N_img, m]
                     s_global = scores_tok.sum(-1)  # [B, N_img]
 
-                    # (b) Top-n & prefix→max 字典
+                    # (b) Top-n & prefix→max
                     top_vals, top_idx = torch.topk(s_global, k=self.n_candidates, dim=-1)
                     batch_prefix_priors = []
                     offset = self.c_token_start_id
@@ -705,17 +688,16 @@ class QueryEvalCallback(TrainerCallback):
                             g_score = raw / (m_eff * cur_tau)
 
                             for t in range(1, m_eff + 1):
-                                # ★ 用 decoder_start_token_id 而非硬编码 pad_id
                                 bos_id = model.config.decoder_start_token_id
                                 pref = (bos_id,) + tuple(x + offset for x in seq[:t])
-                                # ★ 用 0.0 作为默认值，而不是 -1e4
+                                #
                                 T[pref] = max(T.get(pref, 0.0), g_score)
                         batch_prefix_priors.append(T)
 
-                    # (c) beam*B 次展开的 h_q
+                    # (c) beam*B
                     h_q_seq_expanded_2 = h_q_seq_batch_original_2.repeat_interleave(num_beams_eval, dim=0)
 
-                    # (d) 构造新的 logits-processor
+                    # (d) logits-processor
                     prefix_proc = PrefixPriorLogitsProcessor(
                         h_q_expanded=h_q_seq_expanded_2,
                         λ=cur_lambda,
