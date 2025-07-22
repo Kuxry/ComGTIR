@@ -25,7 +25,7 @@ You can create a conda environment with the required dependencies using the prov
 
 ```bash 
 conda env create -f environment.yml
-conda activate avg
+conda activate tir
 ```
 
 ## 🧾 Data
