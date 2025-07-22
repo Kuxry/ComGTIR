@@ -55,7 +55,7 @@ bash scripts/train_rqvae.sh
 
 The trained model will be saved in the `RQ-VAE/output` directory.
 
-#### Step 2: Generate Voken Codes (Discrete Image Representations)
+#### Step 2: Discrete Image Representations
 
 ```bash
 bash scripts/generate_codes.sh
@@ -81,7 +81,7 @@ This project implements a multi-stage training process to progressively enhance 
 
 
 
-🔹 **Stage 1: Sequential ImageID Generation**
+🔹 **Stage 1: Sequential Identifier**
 
 Train an autoregressive decoder on voken sequences.
 
@@ -91,7 +91,7 @@ Train an autoregressive decoder on voken sequences.
 bash scripts/stage1_seqid.sh
 # This script calls train_retriever_t5_seqid.py internally.
 ```
-🔹 **Stage 2: Set-based Preference Scoring**
+🔹 **Stage 2: Order-invariant Identifier**
 
 Train a global relevance head with InfoNCE loss to learn set-based preferences.
 
