@@ -129,13 +129,13 @@ After Stage 3 has saved its best checkpoint, simply run the evaluation script to
 bash scripts/test_tir.sh
 ```
 
-if you want to rerank the top-k candidates, using CLIP, you can run the following command:
+If you want to rerank the top-k candidates, using CLIP, you can run the following command:
 
 ```bash
 bash scripts/test_tir_clip_rerank.sh
 ```
 
-if you want to rerank the top-k candidates, using BLIP(itm), you can run the following command:
+If you want to rerank the top-k candidates, using BLIP(itm), you can run the following command:
 
 ```bash
 bash scripts/test_tir_blip_rerank.sh
