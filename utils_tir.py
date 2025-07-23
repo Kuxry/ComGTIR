@@ -425,7 +425,7 @@ class PAGLogitsProcessor(LogitsProcessor):
 
 class PrefixPriorLogitsProcessor(LogitsProcessor):
     """
-    同时应用
+    
       (i) token-level  λ·h_q[v]
       (ii) prefix-level  max_global(prefix)
     """
@@ -433,7 +433,7 @@ class PrefixPriorLogitsProcessor(LogitsProcessor):
                  h_q_expanded,          # [B*beam, C]
                  λ,
                  c_start, code_book_size,
-                 prefix_priors,         # List[Dict[prefix_tuple -> float]]，长度 = B
+                 prefix_priors,         # List[Dict[prefix_tuple -> float]]，length = B
                  beam_size):
         self.h_q_expanded  = h_q_expanded
         self.λ             = λ
