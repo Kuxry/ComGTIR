@@ -9,7 +9,7 @@ python tools/unified_encdoer.py \
 
 # #coco-pseudo
 # python tools/unified_encdoer.py \
-#     --base_model_dir "xxx/output/retriever/coco_base/coco_pseudo_vali/t5-base/20250626_2128__c1024_ep100_lr0.001_bch128_embadded/checkpoint-13872/" \
+#     --base_model_dir "xxx/output/retriever/coco_base/coco_pseudo_vali/t5-base/xxx_c1024_ep100_lr0.001_bch128_embadded/checkpoint-13872/" \
 #     --encoder_ckpt "xxx/stage1/coco_stage1_output/pseudo/best_enc_step3000.pt" \
 #     --guidance_head_ckpt "xxx/stage1/coco_stage1_output/pseudo/best_head_step3000.pt" \
 #     --output_dir "xxx/output/retriever/coco_merge/pseudo/vali_test/merged_encoder_guidance_model_coco" \
