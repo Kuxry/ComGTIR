@@ -1,11 +1,11 @@
 #!/bin/bash
 #flickr-nopseudo
-#python tools/unified_encdoer.py \
-#    --base_model_dir "xxx/output/retriever/flickr_base/flickr_no_pseudo_vali/t5-base/20250625_1200__c1024_ep100_lr0.001_bch128_embadded/checkpoint-3976/" \
-#    --encoder_ckpt "xxx/stage1/ficker_stage1_output/nopseudo/best_enc_step900.pt" \
-#    --guidance_head_ckpt "xxx/stage1/ficker_stage1_output/nopseudo/best_head_step900.pt" \
-#    --output_dir "xxx/output/retriever/flickr_merge/nopseudo/vali_test/merged_encoder_guidance_model_flick" \
-#    --code_book_size 1024
+python tools/unified_encdoer.py \
+   --base_model_dir "xxx/output/retriever/flickr_base/flickr_no_pseudo_vali/t5-base/20250625_1200__c1024_ep100_lr0.001_bch128_embadded/checkpoint-3976/" \
+   --encoder_ckpt "xxx/stage1/ficker_stage1_output/nopseudo/best_enc_step900.pt" \
+   --guidance_head_ckpt "xxx/stage1/ficker_stage1_output/nopseudo/best_head_step900.pt" \
+   --output_dir "xxx/output/retriever/flickr_merge/nopseudo/vali_test/merged_encoder_guidance_model_flick" \
+   --code_book_size 1024
 
 # #coco-pseudo
 # python tools/unified_encdoer.py \
