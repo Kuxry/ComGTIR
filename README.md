@@ -30,7 +30,7 @@ conda activate tir
 
 ## 🧾 Data
 
-1. The dataset used in the paper is the [COCO 2014](http://cocodataset.org/#download) dataset and the [Flickr30k](https://www.kaggle.com/hsankesara/flickr-image-dataset) dataset. The raw images should be downloaded and placed in the `RQ-VAE/data` directory, along with captions. The captions files we used can be found [here](https://drive.google.com/drive/folders/1SNw5N9GZb7ABb2TPnmMYHuxdd_odgAQc?usp=sharing).
+1. The dataset used in the paper is the [COCO 2014](http://cocodataset.org/#download) dataset and the [Flickr30k](https://www.kaggle.com/hsankesara/flickr-image-dataset) dataset. The raw images should be downloaded and placed in the `RQ-VAE/data` directory, along with captions. The captions files we used can be found [here](https://drive.google.com).
 
 2. Run the following command to preprocess the data to generate the image features and text features:
 
@@ -39,7 +39,7 @@ cd RQ-VAE
 bash scripts/prepare_emb.sh
 ```
 
-3. You can also use the simple `tools/generate_pseudo_query.py` script to generate pseudo queries to augment the dataset. The pseudo queries we used can be found [here](https://drive.google.com/drive/folders/1SNw5N9GZb7ABb2TPnmMYHuxdd_odgAQc?usp=sharing).
+3. You can also use the simple `tools/generate_pseudo_query.py` script to generate pseudo queries to augment the dataset. The pseudo queries we used can be found [here](https://drive.google.com).
 
 
 ## 📈 ComGTIR-D Pipeline
