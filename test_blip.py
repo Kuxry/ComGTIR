@@ -65,7 +65,7 @@ def main(args):
     assert len(img_names_full) == len(caps), "mismatch in number of images and captions"
     N, K = len(caps), args.topk
 
-    # <<< 1) 只保留 1000 张唯一图片（Flickr test split）
+    # <<< 1) （Flickr test split）
     unique_img_names = list(dict.fromkeys(img_names_full))
     name2idx = {n:i for i,n in enumerate(unique_img_names)}
     txt2img  = np.array([name2idx[n] for n in img_names_full], dtype=np.int32)
