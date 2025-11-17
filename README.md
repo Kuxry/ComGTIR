@@ -150,6 +150,11 @@ bash scripts/test_tir_blip_rerank.sh
 - The default hyperparameters (e.g., learning rate, batch size, number of epochs) are configured for reference datasets (such as Flickr30K or COCO).  
 
 
+## Citation
+
+If you find this code useful, please consider citing our paper:
+
+```bibtex
 @inproceedings{li2025comgtir,
   title={A Combination-based Framework for Generative Text-image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies},
   author={Li, Kaipeng and Yu, Haitao and Fang, Yubo and Lei, Chao},
@@ -158,9 +163,3 @@ bash scripts/test_tir_blip_rerank.sh
   year={2025}
 }
 
-**📚 Citation
-If you find this code useful, please consider citing our paper:
-  
-- Li, K., Yu, H., Fang, Y., & Lei, C. (2025).  
-  *A Combination-based Framework for Generative Text-image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies.*  
-  In *Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region (SIGIR-AP '25)*.
