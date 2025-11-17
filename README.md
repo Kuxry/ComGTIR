@@ -157,7 +157,7 @@ If you find this code useful, please consider citing our paper:
 ```bibtex
 @inproceedings{li2025comgtir,
   title={A Combination-based Framework for Generative Text-image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies},
-  author={Li, Kaipeng and Yu, Haitao and Fang, Yubo and Lei, Chao},
+  author = {Kaipeng Li and Haitao Yu and Yubo Fang and Chao Lei},
   booktitle={Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region},
   series={SIGIR-AP '25},
   year={2025}
