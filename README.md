@@ -148,4 +148,14 @@ bash scripts/test_tir_blip_rerank.sh
 
 - Please update all dataset paths in both training and evaluation scripts to match your local directory structure.You should tune them appropriately for your own dataset and task.
 - The default hyperparameters (e.g., learning rate, batch size, number of epochs) are configured for reference datasets (such as Flickr30K or COCO).  
+
+
+@inproceedings{li2025comgtir,
+  title={A Combination-based Framework for Generative Text-image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies},
+  author={Li, Kaipeng and Yu, Haitao and Fang, Yubo and Lei, Chao},
+  booktitle={Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region},
+  series={SIGIR-AP '25},
+  year={2025}
+}
+
   
