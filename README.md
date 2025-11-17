@@ -158,4 +158,9 @@ bash scripts/test_tir_blip_rerank.sh
   year={2025}
 }
 
+**📚 Citation
+If you find this code useful, please consider citing our paper:
   
+- Li, K., Yu, H., Fang, Y., & Lei, C. (2025).  
+  *A Combination-based Framework for Generative Text-image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies.*  
+  In *Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region (SIGIR-AP '25)*.
