@@ -155,7 +155,7 @@ bash scripts/test_tir_blip_rerank.sh
 If you find this code useful, please consider citing our paper:
 
 ```bibtex
-@inproceedings{li2025comgtir,
+@misc{li2025comgtir,
   title={A Combination-based Framework for Generative Text-image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies},
   author = {Kaipeng Li and Haitao Yu and Yubo Fang and Chao Lei},
   booktitle={Proceedings of the 2025 Annual International ACM SIGIR Conference on Research and Development in Information Retrieval in the Asia Pacific Region},
