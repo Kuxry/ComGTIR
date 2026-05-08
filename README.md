@@ -149,7 +149,6 @@ bash scripts/test_tir_blip_rerank.sh
 - Please update all dataset paths in both training and evaluation scripts to match your local directory structure.You should tune them appropriately for your own dataset and task.
 - The default hyperparameters (e.g., learning rate, batch size, number of epochs) are configured for reference datasets (such as Flickr30K or COCO).  
 
-
 ## Citation
 
 If you find this code useful, please consider citing our paper:
