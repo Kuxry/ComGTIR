@@ -2,7 +2,8 @@
 ## 🔍 Overview
 
 This repository provides the official implementation of our paper:
-"A Combination-based Framework for Generative Text–image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies" .
+"A Combination-based Framework for Generative Text–image Retrieval: Dual Identifiers and Hybrid Retrieval Strategies",published at **SIGIR-AP 2025**.
+
 
 We focus on generative cross-modal retrieval (GCMR), especially text-to-image retrieval. Different from classical discriminative approaches, our framework leverages large language models to generate identifiers for candidate images, supporting efficient, scalable, and high-performing retrieval.
 ###  Framework Overview
